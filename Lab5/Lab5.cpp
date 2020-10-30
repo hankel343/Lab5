@@ -5,7 +5,7 @@
 using namespace std;
 
 void GameBanner();
-bool NumCompare();
+int NumCompare();
 void WrongGuessMessage();
 void SuccessMessage();
 void AnotherGameMessage();
@@ -27,7 +27,8 @@ int main()
 
 		GameBanner();
 
-		if (NumCompare()) {
+		if (NumCompare() == 1) 
+		{
 			++wins;
 			SuccessMessage();
 			AnotherGameMessage();
@@ -40,7 +41,8 @@ int main()
 				continue; //Game loop is exited
 			}
 		}
-		else {
+		else if (NumCompare() == 2)
+		{
 			++losses;
 			if (NewGameMenu()) {
 				gameLoop = true;
@@ -50,6 +52,15 @@ int main()
 				gameLoop = false;
 				continue;
 			}
+		}
+		else if (NumCompare() == 3)
+		{
+			cout << "\n\n\n************************************************************************";
+			cout << "\nYou have entered an invalid data type.\n";
+			cout << "The program needs be recompiled to work properly again.\n";
+			cout << "Remember that input should only be integers between 0 and 100 inclusive.\n";
+			cout << "************************************************************************\n";
+			return 1;
 		}
 	} while (gameLoop);
 
@@ -80,7 +91,7 @@ void GameBanner()
 	cout << "Enter your first guess: ";
 }
 
-bool NumCompare()
+int NumCompare()
 {
 	/*Even though code in GameBanner() says a random number has been generated, the number isn't generated until this point because
 	* ranNum would be a non-local scope and it is important for the logic in this block, hense why it is defined and generated here.*/
@@ -97,7 +108,11 @@ bool NumCompare()
 
 	do
 	{
-		if (guess <= 0 || guess > 100) { //User enters out of bounds number.
+		if (!cin)
+		{
+			return 3;
+		}
+		else if (guess <= 0 || guess > 100) { //User enters out of bounds number.
 			cout << "\n****************************************\n";
 			cout << "That number is out of range.\n";
 			cout << "Your input should be between 1 and 100\n";
@@ -113,14 +128,13 @@ bool NumCompare()
 		}
 		else
 		{ //User guesses random number.
-			return true; //NumCompare returns a true value
+			return 1; //NumCompare returns a true value
 		}
-	} while (guessCount < 20);
+	} while (guessCount <= 20);
 
 	cout << "You are out of guesses!\n";
 	AnotherGameMessage();
-	return false;
-
+	return 2;
 }
 
 void WrongGuessMessage()
@@ -130,39 +144,39 @@ void WrongGuessMessage()
 	srand(unsigned int(time(NULL))); //Seeds random number generator
 	failureMessageIndex = rand() % 10 + 1; //Generates random numbers between 0 and 5
 
-	switch (failureMessageIndex) 
-{
-		case 1:	cout << "\n\nNope\n";
-				break;
+	switch (failureMessageIndex)
+	{
+	case 1:	cout << "\n\nNope\n";
+		break;
 
-		case 2:	cout << "\n\nThat's not it.\n";
-				break;
+	case 2:	cout << "\n\nThat's not it.\n";
+		break;
 
-		case 3:	cout << "\n\nKeep trying.\n";
-				break;
+	case 3:	cout << "\n\nKeep trying.\n";
+		break;
 
-		case 4:	cout << "\n\nKeep going\n";
-				break;
+	case 4:	cout << "\n\nKeep going\n";
+		break;
 
-		case 5:	cout << "\n\nTough luck this time\n";
-				break;
+	case 5:	cout << "\n\nTough luck this time\n";
+		break;
 
-		case 6:	cout << "\n\nNot quite.\n";
-				break;
+	case 6:	cout << "\n\nNot quite.\n";
+		break;
 
-		case 7:	cout << "\n\n:/\n";
-				break;
+	case 7:	cout << "\n\n:/\n";
+		break;
 
-		case 8:	cout << "\n\nI'm running out of ways to tell you you're wrong.\n";
-				break;
+	case 8:	cout << "\n\nI'm running out of ways to tell you you're wrong.\n";
+		break;
 
-		case 9:	cout << "\n\nPlease try harder to guess the right number next time.\n";
-				break;
+	case 9:	cout << "\n\nPlease try harder to guess the right number next time.\n";
+		break;
 
-		case 10: cout << "\n\nNope - enter your next guess.\n";
-				break;
+	case 10: cout << "\n\nNope - enter your next guess.\n";
+		break;
 
-		default:	cout << "Other error";
+	default:	cout << "Other error";
 	}
 }
 
@@ -175,31 +189,31 @@ void SuccessMessage()
 
 	switch (successMessageIndex)
 	{
-	case 1:	
+	case 1:
 		cout << "\n\n!!!!!!!!!\n";
 		cout << "Good job!";
 		cout << "\n!!!!!!!!!\n\n";
 		break;
 
-	case 2:	
+	case 2:
 		cout << "\n\n!!!!!!!!!!\n";
 		cout << "That's it!";
 		cout << "\n!!!!!!!!!!\n\n";
 		break;
 
-	case 3:	
+	case 3:
 		cout << "\n\n!!!!!!!!!!!!!!!!!\n";
 		cout << "You got it right!";
 		cout << "\n!!!!!!!!!!!!!!!!!\n\n";
 		break;
 
-	case 4:	
+	case 4:
 		cout << "\n\n!!!!!\n";
 		cout << "Nice!";
 		cout << "\n!!!!!\n\n";
 		break;
 
-	case 5:	
+	case 5:
 		cout << "\n\n!!!!!!!!!\n";
 		cout << "Excelsior";
 		cout << "\n!!!!!!!!!\n\n";
@@ -211,25 +225,25 @@ void SuccessMessage()
 		cout << "\n!!!!!!!!!!!!!!\n\n";
 		break;
 
-	case 7:	
+	case 7:
 		cout << "\n\n!!!!!!!!!!\n";
 		cout << "Outstanding";
 		cout << "\n!!!!!!!!!!\n\n";
 		break;
 
-	case 8: 
+	case 8:
 		cout << "\n\n!!!!!!!\n";
 		cout << "You win";
 		cout << "\n!!!!!!!\n\n";
 		break;
 
-	case 9:	
+	case 9:
 		cout << "\n\n!!!!!!!!!!\n";
 		cout << "You did it";
 		cout << "\n!!!!!!!!!!\n\n";
 		break;
 
-	case 10: 
+	case 10:
 		cout << "\n\n!!!!!!!!!\n";
 		cout << "Excellent";
 		cout << "\n!!!!!!!!!\n\n";
@@ -240,7 +254,7 @@ void SuccessMessage()
 	}
 }
 
-void AnotherGameMessage() 
+void AnotherGameMessage()
 {
 	int MenuPromptIndex = 0; //Used to generate random failure messages in the if-else ladder below
 
@@ -313,12 +327,12 @@ bool NewGameMenu()
 		cout << "\n\n"; //Space before next game.
 
 		switch (choice) {
-		case '1':	
+		case '1':
 			newGame = true; //Return value for New_Game_Menu()
 			switchLoop = false; //Breaks out of menu loop to return value
 			break;
 
-		case '2':	
+		case '2':
 			newGame = false; //Return value for New_Game_Menu()
 			switchLoop = false; //Breaks out of menu loop to return value
 			break;
