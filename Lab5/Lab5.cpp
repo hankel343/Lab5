@@ -5,7 +5,7 @@
 using namespace std;
 
 void GameBanner();
-int NumCompare();
+bool NumCompare();
 void WrongGuessMessage();
 void SuccessMessage();
 void AnotherGameMessage();
@@ -27,8 +27,7 @@ int main()
 
 		GameBanner();
 
-		if (NumCompare() == 1) 
-		{
+		if (NumCompare()) {
 			++wins;
 			SuccessMessage();
 			AnotherGameMessage();
@@ -41,8 +40,7 @@ int main()
 				continue; //Game loop is exited
 			}
 		}
-		else if (NumCompare() == 2)
-		{
+		else {
 			++losses;
 			if (NewGameMenu()) {
 				gameLoop = true;
@@ -52,15 +50,6 @@ int main()
 				gameLoop = false;
 				continue;
 			}
-		}
-		else if (NumCompare() == 3)
-		{
-			cout << "\n\n\n************************************************************************";
-			cout << "\nYou have entered an invalid data type.\n";
-			cout << "The program needs be recompiled to work properly again.\n";
-			cout << "Remember that input should only be integers between 0 and 100 inclusive.\n";
-			cout << "************************************************************************\n";
-			return 1;
 		}
 	} while (gameLoop);
 
@@ -91,7 +80,7 @@ void GameBanner()
 	cout << "Enter your first guess: ";
 }
 
-int NumCompare()
+bool NumCompare()
 {
 	/*Even though code in GameBanner() says a random number has been generated, the number isn't generated until this point because
 	* ranNum would be a non-local scope and it is important for the logic in this block, hense why it is defined and generated here.*/
@@ -108,11 +97,17 @@ int NumCompare()
 
 	do
 	{
-		if (!cin)
+		if (!cin) //User enters an invalid data type.
 		{
-			return 3;
+			cout << "\n***********************************************************\n";
+			cout << "You entered an invalid data type.\n";
+			cout << "Your input should be only integers between 1 and 100 inclusive.";
+			cout << "\n***********************************************************\n";
+			cin.clear(); //This line clears the failure flag on the input stream.
+			cin.ignore(1000, '\n'); //This line ignores anything else in the line that caused the input stream to fail. 1000 is arbitrary and also uses new line char as a termination point.
 		}
-		else if (guess <= 0 || guess > 100) { //User enters out of bounds number.
+		else if (isdigit(guess) && guess <= 0 || guess > 100) //User enters out of bounds number. isdigit() method is used to check if input is a number AND outside of the range on both sides.
+		{ 
 			cout << "\n****************************************\n";
 			cout << "That number is out of range.\n";
 			cout << "Your input should be between 1 and 100\n";
@@ -128,13 +123,14 @@ int NumCompare()
 		}
 		else
 		{ //User guesses random number.
-			return 1; //NumCompare returns a true value
+			return true; //NumCompare returns a true value
 		}
-	} while (guessCount <= 20);
+	} while (guessCount < 20);
 
 	cout << "You are out of guesses!\n";
 	AnotherGameMessage();
-	return 2;
+	return false;
+
 }
 
 void WrongGuessMessage()
