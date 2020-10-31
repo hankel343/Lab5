@@ -99,12 +99,15 @@ bool NumCompare()
 	{
 		if (!cin) //User enters an invalid data type.
 		{
-			cout << "\n***********************************************************\n";
+			cout << "\n*********************************************************************\n";
 			cout << "You entered an invalid data type.\n";
-			cout << "Your input should be only integers between 1 and 100 inclusive.";
-			cout << "\n***********************************************************\n";
+			cout << "Your input should be only integers between 1 inclusive and 100 inclusive.";
+			cout << "\n*********************************************************************\n";
 			cin.clear(); //This line clears the failure flag on the input stream.
 			cin.ignore(1000, '\n'); //This line ignores anything else in the line that caused the input stream to fail. 1000 is arbitrary and also uses new line char as a termination point.
+
+			cout << "Try again: ";
+			cin >> guess;
 		}
 		else if (isdigit(guess) && guess <= 0 || guess > 100) //User enters out of bounds number. isdigit() method is used to check if input is a number AND outside of the range on both sides.
 		{ 
