@@ -146,6 +146,7 @@ bool NumCompare()
 	 *100 would not be included in the range of values because 100 is a multiple of 100, so -
 	 *the range of values from the modulo operation can be 1 - 99, and by adding one to the operation we obtain 100.*/
 
+	int guessesLeft = 19; //This shows the user how many guesses they have left during the game
 	int guessCount = 1; //Count control for folowing loop that gives player 20 chances to guess the random number.
 
 	int guess;
@@ -169,7 +170,7 @@ bool NumCompare()
 		{ 
 			cout << "\n****************************************\n";
 			cout << "That number is out of range.\n";
-			cout << "Your input should be between 1 and 100\n";
+			cout << "Your input should be between 1 inclusive and 100 inclusive\n";
 			cout << "****************************************\n\n";
 			cout << "Try again: ";
 			cin >> guess;
@@ -178,6 +179,14 @@ bool NumCompare()
 		{ 
 			++guessCount;
 			WrongGuessMessage(); //wrong guess returns a failure message.
+
+			//Following if-else statement prints how many guesses the user has for each game.
+			if (guessesLeft > 1)
+				cout << "You have " << guessesLeft << " guesses left\n";
+			else
+				cout << "You have " << guessesLeft << " guess left!\n";
+			guessesLeft--;
+
 			cout << "Try again: ";
 			cin >> guess;
 		}
@@ -187,8 +196,10 @@ bool NumCompare()
 		}
 	} while (guessCount < 20);
 
+	cout << "\n\n*****************************************************\n";
 	cout << "You are out of guesses!\n";
 	cout << "In case you were wondering, the secret number was: " << ranNum;
+	cout << "\n*****************************************************\n";
 	AnotherGameMessage(); //Prints a random message prompting the user for another game.
 	return false; //Returns false to the main function
 
@@ -222,7 +233,7 @@ void WrongGuessMessage()
 	case 6:	cout << "\n\nNot quite.\n";
 		break;
 
-	case 7:	cout << "\n\n:/\n";
+	case 7:	cout << "\n\nHow disappointing\n";
 		break;
 
 	case 8:	cout << "\n\nI'm running out of ways to tell you you're wrong.\n";
